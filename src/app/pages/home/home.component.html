@@ -1,3 +1,43 @@
-<h2>Olympic games app</h2>
-<hr />
-<p>{{ (olympics$ | async)?.length }} data loaded</p>
+<!-- État de chargement -->
+<div class="dashboard-container" *ngIf="loading">
+  <p class="loading">Chargement des données olympiques...</p>
+</div>
+
+<!-- État d'erreur -->
+<div class="dashboard-container" *ngIf="error && !loading">
+  <div class="error-state">
+    <h2>Erreur</h2>
+    <p>{{ errorMessage }}</p>
+    <button class="retry-button" (click)="loadOlympicData()">Réessayer</button>
+  </div>
+</div>
+
+<!-- Affichage normal -->
+<div class="dashboard-container" *ngIf="!loading && !error && olympics.length > 0">
+  <h1 class="dashboard-title">Medals per Country</h1>
+
+  <!-- Cartes de statistiques -->
+  <div class="info-cards">
+    <div class="info-card">
+      <p class="label">Number of JOs</p>
+      <p class="value">{{ totalJOs }}</p>
+    </div>
+    <div class="info-card">
+      <p class="label">Number of countries</p>
+      <p class="value">{{ totalCountries }}</p>
+    </div>
+  </div>
+
+  <!-- Graphique en camembert -->
+  <div class="chart-container">
+    <ngx-charts-pie-chart
+      [results]="chartData"
+      [legend]="false"
+      [labels]="true"
+      [doughnut]="false"
+      [explodeSlices]="false"
+      [gradient]="false"
+      (select)="onSelect($event)">
+    </ngx-charts-pie-chart>
+  </div>
+</div>
