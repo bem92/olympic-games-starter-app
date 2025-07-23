@@ -1,1 +1,56 @@
 <p>detail works!</p>
+<!-- État de chargement -->
+<div class="detail-container" *ngIf="loading">
+  <p class="loading">Chargement des données du pays...</p>
+</div>
+
+<!-- État d'erreur -->
+<div class="detail-container error-state" *ngIf="error && !loading">
+  <h1 class="detail-title">{{ errorMessage }}</h1>
+  <button class="back-button" (click)="goBack()">
+    ← Back to dashboard
+  </button>
+</div>
+
+<!-- Affichage normal -->
+<div class="detail-container" *ngIf="!loading && !error && countryData">
+  <!-- Nom du pays dans un badge -->
+  <div class="country-header">
+    <h1 class="detail-title">{{ countryData.country }}</h1>
+  </div>
+
+  <!-- Cartes de statistiques -->
+  <div class="info-cards">
+    <div class="info-card">
+      <p class="label">Number of entries</p>
+      <p class="value">{{ countryData.participations.length }}</p>
+    </div>
+    <div class="info-card">
+      <p class="label">Total number medals</p>
+      <p class="value">{{ totalMedals }}</p>
+    </div>
+    <div class="info-card">
+      <p class="label">Total number of athletes</p>
+      <p class="value">{{ totalAthletes }}</p>
+    </div>
+  </div>
+
+  <!-- Graphique linéaire -->
+  <div class="chart-container">
+    <ngx-charts-line-chart
+      [results]="lineChartData"
+      [legend]="false"
+      [xAxis]="true"
+      [yAxis]="true"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      [xAxisLabel]="'Year'"
+      [yAxisLabel]="'Medals'">
+    </ngx-charts-line-chart>
+  </div>
+
+  <!-- Bouton retour -->
+  <button class="back-button" (click)="goBack()">
+    ← Back to dashboard
+  </button>
+</div>
