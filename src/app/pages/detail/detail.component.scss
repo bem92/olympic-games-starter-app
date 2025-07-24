@@ -1,34 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-// Applique la police "Poppins"
+// Applique la police Poppins
 * {
   font-family: 'Poppins', sans-serif;
 }
 
-.dashboard-container {
+.detail-container {
   max-width: 900px;
-  margin: auto;
+  margin: 0 auto;
   padding: 2rem;
   text-align: center;
 
-  // Titre principal stylé comme la maquette
-  .dashboard-title {
-    background-color: #007b80;
-    color: white;
-    padding: 0.4rem 1.5rem;
-    border-radius: 12px;
-    font-size: 1.6rem;
-    font-weight: 600;
+  // Badge pour le nom du pays
+  .country-header {
     display: inline-block;
+    background-color: #007b80;
+    border-radius: 999px;
+    padding: 0.5rem 1.5rem;
     margin-bottom: 1.5rem;
   }
 
+  .detail-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin: 0;
+    color: white;
+  }
+
+  // Cartes d'information
   .info-cards {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
 
     .info-card {
       border: 2px solid #007b80;
@@ -36,61 +41,31 @@
       padding: 0.5rem 1rem;
       background-color: #f9f9f9;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      width: fit-content;
-      min-width: 130px;
+      min-width: 150px;
 
       .label {
         color: #555;
         font-size: 0.9rem;
+        margin-bottom: 0.5rem;
       }
 
       .value {
         font-weight: 600;
         font-size: 1.4rem;
-        margin-top: 0.2rem;
+        margin: 0;
       }
     }
   }
 
+  // Container du graphique
   .chart-container {
     max-width: 600px;
-    margin: 0 auto;
-
-    ngx-charts-pie-chart {
-      display: block;
-      width: 100%;
-    }
-
-    text {
-      font-size: 13px;
-      fill: #000;
-    }
+    margin: 0 auto 2rem;
+    height: 300px;
   }
-}
 
-// États de chargement et d'erreur
-.loading {
-  font-size: 1.2rem;
-  color: #007b80;
-  text-align: center;
-  padding: 3rem;
-}
-
-.error-state {
-  text-align: center;
-  padding: 2rem;
-  
-  h2 {
-    color: #d9534f;
-    margin-bottom: 1rem;
-  }
-  
-  p {
-    color: #666;
-    margin-bottom: 1.5rem;
-  }
-  
-  .retry-button {
+  // Bouton retour
+  .back-button {
     background-color: #007b80;
     color: white;
     border: none;
@@ -99,16 +74,40 @@
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s;
-    
+
     &:hover {
       background-color: #005a5d;
+    }
+  }
+
+  // État de chargement
+  .loading {
+    font-size: 1.2rem;
+    color: #007b80;
+    padding: 2rem;
+  }
+
+  // État d'erreur
+  &.error-state {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .detail-title {
+      color: #d9534f;
+      background: none;
+      padding: 0;
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
     }
   }
 }
 
 // Responsive pour mobile
 @media screen and (max-width: 600px) {
-  .dashboard-container {
+  .detail-container {
     padding: 1rem;
 
     .info-cards {
@@ -119,6 +118,10 @@
         width: 100%;
         max-width: 220px;
       }
+    }
+
+    .chart-container {
+      height: 250px;
     }
   }
 }

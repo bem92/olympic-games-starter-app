@@ -1,11 +1,10 @@
-// TODO: create here a typescript interface for a participation
-/*
-example of participation:
-{
-    id: 1,
-    year: 2012,
-    city: "Londres",
-    medalsCount: 28,
-    athleteCount: 372
+/**
+ * Modèle représentant la participation d'un pays à une édition des Jeux.
+ */
+export interface Participation {
+  id: number;           // Identifiant de la participation
+  year: number;         // Année des JO
+  city: string;         // Ville hôte
+  medalsCount: number;  // Nombre de médailles gagnées
+  athleteCount: number; // Nombre d'athlètes participants
 }
-*/
