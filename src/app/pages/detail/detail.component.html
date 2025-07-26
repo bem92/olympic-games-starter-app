@@ -18,21 +18,12 @@
     <h1 class="detail-title">{{ countryData.country }}</h1>
   </div>
 
-  <!-- Cartes de statistiques -->
-  <div class="info-cards">
-    <div class="info-card">
-      <p class="label">Number of entries</p>
-      <p class="value">{{ countryData.participations.length }}</p>
+    <!-- Cartes de statistiques -->
+    <div class="info-cards">
+      <app-info-card [label]="'Number of entries'" [value]="countryData.participations.length"></app-info-card>
+      <app-info-card [label]="'Total number medals'" [value]="totalMedals"></app-info-card>
+      <app-info-card [label]="'Total number of athletes'" [value]="totalAthletes"></app-info-card>
     </div>
-    <div class="info-card">
-      <p class="label">Total number medals</p>
-      <p class="value">{{ totalMedals }}</p>
-    </div>
-    <div class="info-card">
-      <p class="label">Total number of athletes</p>
-      <p class="value">{{ totalAthletes }}</p>
-    </div>
-  </div>
 
   <!-- Graphique linéaire -->
   <div class="chart-container">

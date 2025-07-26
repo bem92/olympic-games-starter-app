@@ -14,13 +14,15 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { DetailComponent } from './pages/detail/detail.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { InfoCardComponent } from './shared/info-card/info-card.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     DetailComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    InfoCardComponent
   ],
   imports: [
     BrowserModule,

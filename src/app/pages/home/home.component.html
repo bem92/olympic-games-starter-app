@@ -18,14 +18,8 @@
 
   <!-- Cartes de statistiques -->
   <div class="info-cards">
-    <div class="info-card">
-      <p class="label">Number of JOs</p>
-      <p class="value">{{ totalJOs }}</p>
-    </div>
-    <div class="info-card">
-      <p class="label">Number of countries</p>
-      <p class="value">{{ totalCountries }}</p>
-    </div>
+    <app-info-card [label]="'Number of JOs'" [value]="totalJOs"></app-info-card>
+    <app-info-card [label]="'Number of countries'" [value]="totalCountries"></app-info-card>
   </div>
 
   <!-- Graphique en camembert -->
