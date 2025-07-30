@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { Olympic } from 'src/app/core/models/Olympic';
+import { ChartData } from 'src/app/core/models/ChartData';
 
 /**
  * Tableau de bord affichant les statistiques globales et le graphique
@@ -17,22 +18,22 @@ import { Olympic } from 'src/app/core/models/Olympic';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   // Subject pour gérer la destruction des subscriptions
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
   
   // Données olympiques
-  olympics: Olympic[] = [];
+  public olympics: Olympic[] = [];
   
   // Statistiques globales
-  totalCountries = 0;
-  totalJOs = 0;
+  public totalCountries = 0;
+  public totalJOs = 0;
   
   // Données pour le graphique
-  chartData: { name: string; value: number }[] = [];
+  public chartData: ChartData[] = [];
   
   // États de l'interface
-  loading = true;
-  error = false;
-  errorMessage = '';
+  public loading = true;
+  public error = false;
+  public errorMessage = '';
 
   constructor(
     private olympicService: OlympicService,
@@ -62,8 +63,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         next: (data) => {
           if (data) {
             this.olympics = data;
-            this.calculateStatistics();
-            this.prepareChartData();
+            const totals = this.olympicService.calculateTotals(data);
+            this.totalCountries = totals.totalCountries;
+            this.totalJOs = totals.totalJOs;
+            this.chartData = this.olympicService.buildChartData(data);
             this.loading = false;
           } else {
             this.handleError('Aucune donnée disponible');
@@ -75,29 +78,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
   }
 
-  /**
-   * Calcule les statistiques globales
-   */
-  private calculateStatistics(): void {
-    this.totalCountries = this.olympics.length;
-    
-    // Calcule le nombre total de JOs (toutes participations confondues)
-    const allParticipations = this.olympics.flatMap(o => o.participations);
-    
-    // Obtient les années uniques pour compter le nombre de JOs
-    const uniqueYears = new Set(allParticipations.map(p => p.year));
-    this.totalJOs = uniqueYears.size;
-  }
-
-  /**
-   * Prépare les données pour le graphique en camembert
-   */
-  private prepareChartData(): void {
-    this.chartData = this.olympics.map(olympic => ({
-      name: olympic.country,
-      value: olympic.participations.reduce((sum, p) => sum + p.medalsCount, 0)
-    }));
-  }
 
   /**
    * Gère la navigation lors du clic sur un segment du graphique

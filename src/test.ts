@@ -1,4 +1,5 @@
-// This file is required by karma.conf.js and loads recursively all the .spec and framework files
+// Point d'entrée des tests unitaires lancés par Karma.
+// Charge automatiquement tous les fichiers *.spec.ts pour l'exécution des tests.
 
 import 'zone.js/testing';
 import { getTestBed } from '@angular/core/testing';
