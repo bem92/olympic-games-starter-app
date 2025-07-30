@@ -26,7 +26,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   totalAthletes = 0;
   
   // Données pour le graphique
-  lineChartData: { name: string; series: { name: string; value: number }[] }[] = [];
+  lineChartData: any[] = [];
   
   // États de l'interface
   loading = true;
