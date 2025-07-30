@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { Olympic } from 'src/app/core/models/Olympic';
+import { LineChartData } from 'src/app/core/models/LineChartData';
 
 /**
  * Page de détail présentant l'évolution des médailles d'un pays.
@@ -16,27 +17,27 @@ import { Olympic } from 'src/app/core/models/Olympic';
 })
 
 export class DetailComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
   
   // Données du pays
-  countryData: Olympic | null = null;
+  public countryData: Olympic | null = null;
   
   // Statistiques calculées
-  totalMedals = 0;
-  totalAthletes = 0;
+  public totalMedals = 0;
+  public totalAthletes = 0;
   
   // Données pour le graphique
-  lineChartData: any[] = [];
+  public lineChartData: LineChartData[] = [];
   
   // États de l'interface
-  loading = true;
-  error = false;
-  errorMessage = '';
+  public loading = true;
+  public error = false;
+  public errorMessage = '';
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private olympicService: OlympicService
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly olympicService: OlympicService
   ) {}
 
   ngOnInit(): void {
@@ -72,8 +73,10 @@ export class DetailComponent implements OnInit, OnDestroy {
               next: (country) => {
                 if (country) {
                   this.countryData = country;
-                  this.calculateStatistics();
-                  this.prepareChartData();
+                  const stats = this.olympicService.calculateCountryStats(country);
+                  this.totalMedals = stats.totalMedals;
+                  this.totalAthletes = stats.totalAthletes;
+                  this.lineChartData = [this.olympicService.buildLineChartData(country)];
                   this.loading = false;
                 } else {
                   this.handleError('Pays non trouvé');
@@ -90,40 +93,11 @@ export class DetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  /**
-   * Calcule les statistiques totales du pays
-   */
-  private calculateStatistics(): void {
-    if (!this.countryData) return;
-    
-    this.totalMedals = this.countryData.participations.reduce(
-      (sum, p) => sum + p.medalsCount, 0
-    );
-    
-    this.totalAthletes = this.countryData.participations.reduce(
-      (sum, p) => sum + p.athleteCount, 0
-    );
-  }
-
-  /**
-   * Prépare les données pour le graphique linéaire
-   */
-  private prepareChartData(): void {
-    if (!this.countryData) return;
-    
-    this.lineChartData = [{
-      name: this.countryData.country,
-      series: this.countryData.participations.map(p => ({
-        name: p.year.toString(),
-        value: p.medalsCount
-      }))
-    }];
-  }
 
   /**
    * Navigation vers la page d'accueil
    */
-  goBack(): void {
+  public goBack(): void {
     this.router.navigate(['/']);
   }
 
